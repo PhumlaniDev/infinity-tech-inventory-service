@@ -22,7 +22,7 @@ jobs:
     uses: PhumlaniDev/reusable-workflows/.github/workflows/discord-notify.yml@main
     with:
       status: success
-      title: "🤖 GitHub Bot PR: ${{ github.publisher.action }}"
+      title: "🤖 GitHub Bot PR: ${{ github.event.action }}"
       description: |
         **Dependabot PR Notification**
         - PR: #${{ github.event.pull_request.number }}

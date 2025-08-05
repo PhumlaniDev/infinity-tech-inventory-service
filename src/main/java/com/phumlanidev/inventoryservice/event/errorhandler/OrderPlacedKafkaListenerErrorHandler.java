@@ -1,7 +1,7 @@
-package com.phumlanidev.inventoryservice.listener.errorhandler;
+package com.phumlanidev.inventoryservice.event.errorhandler;
 
 import com.phumlanidev.commonevents.events.OrderPlacedEvent;
-import com.phumlanidev.inventoryservice.listener.dlq.OrderPlacedEventDlqPublisher;
+import com.phumlanidev.inventoryservice.event.dlq.OrderPlacedEventDlqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -10,10 +10,10 @@ import org.springframework.kafka.listener.ListenerExecutionFailedException;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
-@Component("orderKafkaErrorHandler")
+@Component("orderKafkaListenerErrorHandler")
 @RequiredArgsConstructor
 @Slf4j
-public class OrderKafkaListenerErrorHandler implements KafkaListenerErrorHandler {
+public class OrderPlacedKafkaListenerErrorHandler implements KafkaListenerErrorHandler {
 
   private final OrderPlacedEventDlqPublisher dlqPublisher;
 

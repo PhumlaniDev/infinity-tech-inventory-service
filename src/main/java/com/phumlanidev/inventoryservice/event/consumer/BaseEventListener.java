@@ -1,4 +1,4 @@
-package com.phumlanidev.inventoryservice.listener;
+package com.phumlanidev.inventoryservice.event.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -1,25 +1,33 @@
-package com.phumlanidev.inventoryservice.listener;
+package com.phumlanidev.inventoryservice.event.consumer;
 
 
 import com.phumlanidev.commonevents.events.ProductCreatedEvent;
-import com.phumlanidev.inventoryservice.listener.dlq.ProductCreatedEventDlqPublisher;
+import com.phumlanidev.inventoryservice.event.dlq.ProductCreatedEventDlqPublisher;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
-public class ProductCreatedEventListener {
+public class ProductCreatedEventListener extends BaseEventListener<ProductCreatedEvent>{
 
   private final InventoryServiceImpl inventoryService;
   private final ProductCreatedEventDlqPublisher eventDlqPublisher;
+
+  public ProductCreatedEventListener(
+          KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate,
+          InventoryServiceImpl inventoryService,
+          ProductCreatedEventDlqPublisher eventDlqPublisher) {
+    super(kafkaTemplate, "product-created-dlq");
+    this.inventoryService = inventoryService;
+    this.eventDlqPublisher = eventDlqPublisher;
+  }
 
   @Retryable(
           maxAttempts = 3,
@@ -30,7 +38,8 @@ public class ProductCreatedEventListener {
   @KafkaListener(
           topics = "product.created",
           groupId = "inventory-group",
-          errorHandler = "kafkaListenerErrorHandler"
+          containerFactory = "productCreatedEventKafkaListenerContainerFactory",
+          errorHandler = "productKafkaListenerErrorHandler"
   )
   public void consumeProductCreated(ConsumerRecord<String, ProductCreatedEvent> record) {
     ProductCreatedEvent event = record.value();

@@ -1,20 +1,20 @@
-package com.phumlanidev.inventoryservice.listener.dlq;
+package com.phumlanidev.inventoryservice.event.dlq;
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
+import com.phumlanidev.commonevents.events.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
-public class OrderPlacedEventDlqPublisher {
+@Slf4j
+public class ProductCreatedEventDlqPublisher {
 
-  private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
-  private static final String DLQ_TOPIC = "order-placed-dlq";
+  private final KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
+  private static final String DLQ_TOPIC = "product-created-dlq";
 
-  public void publishToDlq(String key, OrderPlacedEvent event, Exception ex) {
+  public void publishToDlq(String key, ProductCreatedEvent event, Exception ex) {
     log.error("Publishing to DLQ: {}, error: {}", event, ex.getMessage());
 
     int attempts = 0;
@@ -31,10 +31,11 @@ public class OrderPlacedEventDlqPublisher {
         try {
           Thread.sleep(backOff);
           backOff *= 2;
-        } catch (InterruptedException exception) {
+        } catch (InterruptedException exc) {
           Thread.currentThread().interrupt();
         }
       }
     }
+
   }
 }
