@@ -33,7 +33,7 @@ jobs:
     secrets: inherit
 
   sca:
-    needs: build
+    needs: docker
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-sca.yml@main
     with:
       image_tag: ${{ needs.docker.outputs.image_tag }}
