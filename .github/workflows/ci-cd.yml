@@ -33,7 +33,7 @@ jobs:
 
   docker:
     needs: build
-    uses: PhumlaniDev/reusable-workflows/.github/workflows/docker-build-push.yml@main
+    uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-docker.yml@main
     secrets: inherit
 
   #  dast:
