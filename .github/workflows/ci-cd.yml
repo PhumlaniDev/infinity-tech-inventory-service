@@ -6,6 +6,7 @@ permissions:
   actions: read
   security-events: write
   pull-requests: read
+  packages: write
 
 on:
   workflow_dispatch:
@@ -34,6 +35,8 @@ jobs:
   docker:
     needs: build
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-docker.yml@main
+    with:
+      project_name: inventory-service
     secrets: inherit
 
   #  dast:
