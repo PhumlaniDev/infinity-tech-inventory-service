@@ -17,9 +17,6 @@ on:
 jobs:
   build:
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-build-test.yml@main
-    with:
-      project_name: 'inventory-service'
-      image_tag: "${{ secrets.DOCKERHUB_USERNAME }}/inventory-service:latest"
     secrets: inherit
 
   sast:
