@@ -25,18 +25,18 @@ jobs:
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-sast.yml@main
     secrets: inherit
 
-  sca:
-    needs: build
-    uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-sca.yml@main
-    with:
-      image_tag: ${{ needs.build.outputs.image_tag }}
-    secrets: inherit
-
   docker:
     needs: build
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-docker.yml@main
     with:
       project_name: inventory-service
+    secrets: inherit
+
+  sca:
+    needs: build
+    uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-sca.yml@main
+    with:
+      image_tag: ${{ needs.docker.outputs.image_tag }}
     secrets: inherit
 
   #  dast:
