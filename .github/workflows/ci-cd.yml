@@ -28,7 +28,7 @@ jobs:
     needs: build
     uses: PhumlaniDev/reusable-workflows/.github/workflows/java-maven-sca.yml@main
     with:
-      project_name: 'inventory-service'
+      image_tag: ${{ needs.build.outputs.image_tag }}
     secrets: inherit
 
   docker:
