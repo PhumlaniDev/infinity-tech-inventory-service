@@ -23,5 +23,4 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-# Run wait-for-it before starting app
 ENTRYPOINT ["java", "-jar", "app.jar"]
