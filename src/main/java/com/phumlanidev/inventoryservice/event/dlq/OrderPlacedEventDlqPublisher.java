@@ -1,6 +1,7 @@
 package com.phumlanidev.inventoryservice.event.dlq;
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
+
+import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

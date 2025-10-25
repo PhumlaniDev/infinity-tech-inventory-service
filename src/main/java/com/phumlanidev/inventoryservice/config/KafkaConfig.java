@@ -1,9 +1,9 @@
 package com.phumlanidev.inventoryservice.config;
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
 import com.phumlanidev.commonevents.events.StockReservationFailedEvent;
 import com.phumlanidev.commonevents.events.StockReservedEvent;
+import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -39,7 +39,7 @@ public class KafkaConfig {
     config.put("spring.deserializer.value.delegate.class", JsonDeserializer.class);
     config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.phumlanidev.commonevents.events");
     config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
-    config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.phumlanidev.commonevents.events.OrderPlacedEvent");
+    config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.phumlanidev.commonevents.events.order.OrderPlacedEvent");
 //    config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
     return new DefaultKafkaConsumerFactory<>(config);
@@ -68,7 +68,7 @@ public class KafkaConfig {
     config.put("spring.deserializer.value.delegate.class", JsonDeserializer.class);
     config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.phumlanidev.commonevents.events");
     config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
-    config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.phumlanidev.commonevents.events.ProductCreatedEvent");
+    config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.phumlanidev.commonevents.events.product.ProductCreatedEvent");
     return new DefaultKafkaConsumerFactory<>(config);
   }
 

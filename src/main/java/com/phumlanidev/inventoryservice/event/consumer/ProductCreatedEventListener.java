@@ -1,7 +1,8 @@
 package com.phumlanidev.inventoryservice.event.consumer;
 
 
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
+
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import com.phumlanidev.inventoryservice.event.dlq.ProductCreatedEventDlqPublisher;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,6 @@ public class ProductCreatedEventListener extends BaseEventListener<ProductCreate
   }
 
   @Retryable(
-          maxAttempts = 3,
           backoff = @Backoff(delay = 1000, multiplier = 2),
           retryFor = { RecoverableDataAccessException.class },
           noRetryFor = { IllegalAccessError.class }

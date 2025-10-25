@@ -1,6 +1,7 @@
 package com.phumlanidev.inventoryservice.event.dlq;
 
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
+
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

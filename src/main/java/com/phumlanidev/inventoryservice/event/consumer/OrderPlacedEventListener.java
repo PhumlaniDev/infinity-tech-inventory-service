@@ -1,9 +1,10 @@
 package com.phumlanidev.inventoryservice.event.consumer;
 
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
+
 import com.phumlanidev.commonevents.events.StockReservationFailedEvent;
 import com.phumlanidev.commonevents.events.StockReservedEvent;
+import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
 import com.phumlanidev.inventoryservice.dto.StockRequestDto;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,6 @@ public class OrderPlacedEventListener extends BaseEventListener<OrderPlacedEvent
   }
 
   @Retryable(
-          maxAttempts = 3,
           backoff = @Backoff(delay = 1000, multiplier = 2),
           retryFor = {RecoverableDataAccessException.class},
           noRetryFor = {IllegalAccessException.class}
