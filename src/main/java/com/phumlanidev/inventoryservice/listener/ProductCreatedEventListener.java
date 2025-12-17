@@ -1,7 +1,8 @@
 package com.phumlanidev.inventoryservice.listener;
 
 
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
+
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import com.phumlanidev.inventoryservice.listener.dlq.ProductCreatedEventDlqPublisher;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;
 import lombok.RequiredArgsConstructor;

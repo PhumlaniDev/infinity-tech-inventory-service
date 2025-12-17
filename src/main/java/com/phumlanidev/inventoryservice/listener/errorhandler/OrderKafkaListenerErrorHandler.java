@@ -1,6 +1,7 @@
 package com.phumlanidev.inventoryservice.listener.errorhandler;
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
+
+import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
 import com.phumlanidev.inventoryservice.listener.dlq.OrderPlacedEventDlqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

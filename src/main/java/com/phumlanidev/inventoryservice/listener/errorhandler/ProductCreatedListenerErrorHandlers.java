@@ -1,6 +1,7 @@
 package com.phumlanidev.inventoryservice.listener.errorhandler;
 
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
+
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import com.phumlanidev.inventoryservice.listener.dlq.ProductCreatedEventDlqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

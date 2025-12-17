@@ -1,7 +1,8 @@
 package com.phumlanidev.inventoryservice.config;
 
-import com.phumlanidev.commonevents.events.OrderPlacedEvent;
-import com.phumlanidev.commonevents.events.ProductCreatedEvent;
+
+import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
+import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
