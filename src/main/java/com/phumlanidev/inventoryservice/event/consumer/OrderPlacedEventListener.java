@@ -88,37 +88,4 @@ public class OrderPlacedEventListener extends BaseEventListener<OrderPlacedEvent
       throw e;
     }
   }
-
-//  public void reserveStock(ConsumerRecord<String, OrderPlacedEvent> record) {
-//    OrderPlacedEvent event = record.value();
-//    log.info("📦 Inventory reserving for order: {}", event.getOrderId());
-//
-//    List<StockRequestDto> reserved = new ArrayList<>();
-//    try {
-//      for (OrderPlacedEvent.OrderItemDto item : event.getItems()) {
-//        StockRequestDto stockRequestDto = StockRequestDto.builder()
-//                .productId(item.getProductId())
-//                .quantity(item.getQuantity())
-//                .build();
-//
-//        inventoryService.reserveStock(stockRequestDto);
-//        reserved.add(stockRequestDto);
-//        log.info("✅ Reserved {} units of product ID: {}", item.getQuantity(), item.getProductId());
-//      }
-//      streamBridge.send("stockReserved-out-0", new StockReservedEvent(
-//              event.getOrderId(), event.getUserId(), event.getItems(), Instant.now()
-//      ));
-//    } catch (Exception e) {
-//      log.error("❌ Stock reservation failed. Releasing previously reserved stock.", e);
-//
-//      reserved.forEach(inventoryService::releaseStock);
-//
-//      streamBridge.send("stockReservationFailed-out-0", new StockReservationFailedEvent(
-//              event.getOrderId(), event.getUserId(),
-//              "Stock reservation failed. " + e.getMessage(),
-//              Instant.now()
-//      ));
-//      throw e;
-//    }
-//  }
 }
