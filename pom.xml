@@ -127,7 +127,6 @@
       <groupId>com.phumlanidev.commonevents</groupId>
       <artifactId>common-events</artifactId>
       <version>3.1.0</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jspecify</groupId>

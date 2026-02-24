@@ -2,6 +2,7 @@ package com.phumlanidev.inventoryservice.event.consumer;
 
 
 
+
 import com.phumlanidev.commonevents.events.product.ProductCreatedEvent;
 import com.phumlanidev.inventoryservice.event.dlq.ProductCreatedEventDlqPublisher;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;

@@ -1,10 +1,8 @@
 package com.phumlanidev.inventoryservice.event.consumer;
 
-
-
-import com.phumlanidev.commonevents.events.StockReservationFailedEvent;
-import com.phumlanidev.commonevents.events.StockReservedEvent;
 import com.phumlanidev.commonevents.events.order.OrderPlacedEvent;
+import com.phumlanidev.commonevents.events.StockReservedEvent;
+import com.phumlanidev.commonevents.events.StockReservationFailedEvent;
 import com.phumlanidev.inventoryservice.dto.StockRequestDto;
 import com.phumlanidev.inventoryservice.service.impl.InventoryServiceImpl;
 import lombok.extern.slf4j.Slf4j;
