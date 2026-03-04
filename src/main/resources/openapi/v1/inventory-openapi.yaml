@@ -1,0 +1,266 @@
+openapi: 3.1.0
+info:
+  title: Inventory Service API
+  description: |
+    API for managing product stock levels in real-time, typically used in e-commerce,
+    order processing, and checkout flows.
+    
+    **Key operations:**
+    - Reserve stock (temporary hold, usually during checkout)
+    - Release reserved stock (when order is cancelled or abandoned)
+    - Deduct stock (permanent reduction after payment confirmation)
+    - Query current available stock
+    
+    All endpoints require authentication (usually JWT Bearer token).
+  version: 1.0.0
+  contact:
+    name: Infinity Tech Support
+    email: infinitytech@support.co.za
+  license:
+    name: Proprietary License - All rights reserved.
+    url: https://infinitytech.co.za/terms
+  
+servers:
+  - url: https://api.infinitytech.com/v1
+    description: Production server
+  - url: https://staging-api.infinitytech.com/v1
+    description: Staging server
+
+tags:
+  - name: Inventory
+    description: Operations for reserving, releasing, deducting and querying product stock levels
+
+paths:
+  /api/v1/inventory/reserve:
+    post:
+      tags:
+        - Inventory
+      summary: Reserve stock for a product
+      description: |
+        Creates a temporary reservation (hold) on stock for a product.
+        Commonly used during checkout to prevent overselling.
+        Reservations typically expire after a timeout (e.g. 10–30 minutes).
+      operationId: reserveStock
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequestDto'
+      responses:
+        '200':
+          description: Stock successfully reserved
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Insufficient available stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: "Insufficient stock available. Requested: 5, Available: 3"
+        '404':
+          description: Product not found
+  
+  /api/v1/inventory/release:
+    post:
+      tags:
+        - Inventory
+      summary: Release previously reserved stock
+      description: |
+        Releases a stock reservation (makes stock available again).
+        Should be called when checkout is abandoned, order is cancelled before payment, etc.
+      operationId: releaseStock
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequestDto'
+      responses:
+        '200':
+          description: Reservation successfully released
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Product or reservation not found
+  
+  /api/v1/inventory/deduct:
+    post:
+      tags:
+        - Inventory
+      summary: Permanently deduct stock
+      description: |
+        Reduces available stock permanently (after successful payment).
+        This is the final step in order fulfillment that actually consumes inventory.
+      operationId: deductStock
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequestDto'
+      responses:
+        '200':
+          description: Stock successfully deducted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Insufficient stock or reservation mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: "Cannot deduct — stock changed since reservation"
+  
+  /api/v1/inventory/{productId}:
+    get:
+      tags:
+        - Inventory
+      summary: Get current stock level for a product
+      description: Returns available stock quantity for the specified product
+      operationId: getStock
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Unique identifier of the product
+      responses:
+        '200':
+          description: Current stock information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockResponseDto'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Product not found
+
+components:
+  schemas:
+    
+    StockRequestDto:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: integer
+          format: int64
+          description: ID of the product
+          example: 789
+        quantity:
+          type: integer
+          minimum: 1
+          description: Number of units to reserve/release/deduct
+          example: 4
+        orderId:
+          type: string
+          description: Optional — reference to the order (recommended for traceability)
+          example: ORD-20260304-AB123
+        reservationId:
+          type: string
+          description: Optional — identifier of the reservation to release/deduct
+          example: RES-987654321
+      example:
+        productId: 789
+        quantity: 4
+        orderId: ORD-20260304-AB123
+    
+    StockResponseDto:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+          example: 789
+        availableQuantity:
+          type: integer
+          example: 42
+        reservedQuantity:
+          type: integer
+          description: Currently reserved (not yet deducted)
+          example: 8
+        totalQuantity:
+          type: integer
+          description: Physical / total inventory (available + reserved)
+          example: 50
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-03-04T16:45:22Z"
+      required:
+        - productId
+        - availableQuantity
+    
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 409
+        message:
+          type: string
+          example: "Insufficient stock available"
+        detail:
+          type: string
+          nullable: true
+      required:
+        - status
+        - message
+  
+  responses:
+    
+    BadRequest:
+      description: Validation error or malformed request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 400
+            message: "quantity must be a positive integer"
+    
+    Unauthorized:
+      description: Authentication required or token invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 401
+            message: "Authentication required"
+  
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
