@@ -14,7 +14,6 @@ on:
     branches: [ develop, main ]
 
 jobs:
-
   checkstyle:
     name: Checkstyle
     runs-on: ubuntu-latest
