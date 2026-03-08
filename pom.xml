@@ -133,6 +133,17 @@
       <artifactId>jspecify</artifactId>
       <version>1.0.0</version>
     </dependency>
+
+    <!-- Monitoring/Prometheus -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>1.15.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+    </dependency>
     <dependency>
         <groupId>com.github.loki4j</groupId>
         <artifactId>loki-logback-appender</artifactId>
